@@ -1,0 +1,668 @@
+/* Academy Directory Pro - Modern Multi-Entity Design (v3.3) */
+:root{
+  --adp-yellow: #ffc400; /* Academy Yellow */
+  --adp-yellow-dark: #cc9b00;
+  --adp-blue: #2196F3; /* School Blue */
+  --adp-blue-dark: #1976D2;
+  --adp-green: #4CAF50; /* Teacher Green */
+  --adp-green-dark: #388E3C;
+  --adp-white: #ffffff;
+  --adp-gray-light: #f9f9f9;
+  --adp-gray-border: #e6e6e6;
+  --adp-text: #1f2937; /* Darker text */
+  --adp-muted: #6b7280;
+  --adp-radius: 12px;
+  --adp-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  --adp-shadow-hover: 0 8px 24px rgba(0,0,0,0.12);
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+*, *::before, *::after { box-sizing: inherit; }
+
+/* انیمیشن‌ها */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+/* Filter form - Enhanced */
+.adp-filter { 
+    margin: 30px auto; 
+    padding: 0 15px; 
+    width:100%; 
+    max-width:1200px;
+    animation: slideIn 0.5s ease;
+}
+
+.adp-filter-row { 
+    display:flex; 
+    gap:12px; 
+    flex-wrap:wrap; 
+    align-items:stretch;
+    background: var(--adp-white);
+    padding: 20px;
+    border-radius: var(--adp-radius);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+    border: 1px solid var(--adp-gray-border);
+}
+
+.adp-input, .adp-btn { 
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.adp-input { 
+    border: 2px solid var(--adp-gray-border); 
+    background: var(--adp-white); 
+    min-width: 160px; 
+    flex: 1 1 180px;
+    outline: none;
+}
+
+.adp-input:focus {
+    border-color: var(--adp-yellow);
+    box-shadow: 0 0 0 3px rgba(255, 196, 0, 0.1);
+}
+
+.adp-input-search { 
+    flex: 2 1 250px; 
+}
+
+.adp-input-type {
+    flex: 1 1 200px;
+    font-weight: 600;
+}
+
+.adp-btn { 
+    border: none; 
+    cursor: pointer; 
+    font-weight: 600;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.adp-btn:hover {
+    transform: translateY(-2px);
+}
+
+.adp-btn-primary { 
+    background: var(--adp-yellow); 
+    color: var(--adp-text); 
+    box-shadow: 0 4px 12px rgba(255, 196, 0, 0.3); 
+    padding: 0 24px;
+}
+
+.adp-btn-primary:hover { 
+    background: var(--adp-yellow-dark);
+    box-shadow: 0 6px 16px rgba(255, 196, 0, 0.4);
+}
+
+#adp-reset { 
+    background: var(--adp-white); 
+    border: 2px solid var(--adp-gray-border); 
+    color: var(--adp-muted);
+}
+
+#adp-reset:hover { 
+    background: var(--adp-gray-light);
+    border-color: var(--adp-muted);
+}
+
+.adp-loading-text { 
+    margin: 0 10px; 
+    color: var(--adp-muted); 
+    font-size: 14px; 
+}
+
+/* Grid layout */
+.adp-result-container { padding: 0 15px; width:100%; max-width:1200px; margin: 0 auto; }
+.adp-grid { display:grid; gap:20px; padding: 0; }
+.adp-cols-1{grid-template-columns:1fr;}
+.adp-cols-2{grid-template-columns:repeat(2,1fr);}
+.adp-cols-3{grid-template-columns:repeat(3,1fr);}
+.adp-cols-4{grid-template-columns:repeat(4,1fr);}
+
+/* Card - Enhanced with Entity Types */
+.adp-card {
+    background: var(--adp-white);
+    border-radius: var(--adp-radius);
+    box-shadow: var(--adp-shadow);
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+    animation: fadeIn 0.5s ease;
+    border: 2px solid transparent;
+}
+
+.adp-card:hover { 
+    box-shadow: var(--adp-shadow-hover);
+    transform: translateY(-4px);
+}
+
+/* رنگ بوردر بر اساس نوع موجودیت */
+.adp-card-academy:hover { border-color: var(--adp-yellow); }
+.adp-card-school:hover { border-color: var(--adp-blue); }
+.adp-card-teacher:hover { border-color: var(--adp-green); }
+
+.adp-featured { 
+    box-shadow: 0 6px 20px rgba(255, 196, 0, 0.2);
+}
+
+.adp-featured .adp-card-inner { 
+    border: 3px solid var(--adp-yellow);
+}
+
+.adp-card-inner { 
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+
+/* بج نوع موجودیت */
+.adp-entity-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    backdrop-filter: blur(10px);
+}
+
+/* تصویر */
+.adp-thumb { 
+    position: relative;
+    overflow: hidden;
+}
+
+.adp-thumb img { 
+    width: 100%; 
+    height: 220px; 
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.adp-card:hover .adp-thumb img {
+    transform: scale(1.05);
+}
+
+.adp-thumb-default {
+    width: 100%;
+    height: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.adp-content { 
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 12px;
+}
+
+.adp-title { 
+    font-size: 19px; 
+    margin: 0; 
+    font-weight: 700; 
+    color: var(--adp-text);
+    line-height: 1.4;
+}
+
+.adp-title a { 
+    color: inherit; 
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.adp-card-academy .adp-title a:hover { color: var(--adp-yellow-dark); }
+.adp-card-school .adp-title a:hover { color: var(--adp-blue-dark); }
+.adp-card-teacher .adp-title a:hover { color: var(--adp-green-dark); }
+
+.adp-stars { 
+    color: var(--adp-yellow); 
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    gap: 2px;
+}
+
+.star-on { color: var(--adp-yellow); }
+.star-off { color: #ddd; }
+
+/* اطلاعات اضافی */
+.adp-extra-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    font-size: 13px;
+    color: var(--adp-muted);
+}
+
+.adp-info-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 10px;
+    background: var(--adp-gray-light);
+    border-radius: 6px;
+}
+
+.adp-info-item i {
+    color: var(--adp-yellow-dark);
+}
+
+/* تگ‌ها */
+.adp-tags { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 6px;
+}
+
+.adp-tag { 
+    color: white;
+    padding: 5px 12px; 
+    border-radius: 20px; 
+    font-size: 12px; 
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.adp-tag-more {
+    background: var(--adp-gray-border);
+    color: var(--adp-muted);
+}
+
+/* خلاصه متن */
+.adp-excerpt { 
+    font-size: 14px; 
+    color: var(--adp-muted); 
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+}
+
+/* اطلاعات تماس */
+.adp-meta { 
+    list-style: none; 
+    padding: 0; 
+    margin: 0; 
+    font-size: 13px; 
+    color: var(--adp-muted);
+    text-align: right;
+}
+
+.adp-meta li { 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    margin-bottom: 6px;
+    gap: 8px;
+}
+
+.adp-meta i { 
+    color: var(--adp-yellow-dark); 
+    flex-shrink: 0;
+}
+
+.adp-meta a { 
+    color: var(--adp-muted); 
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.adp-meta a:hover { 
+    color: var(--adp-yellow-dark); 
+}
+
+/* دکمه‌های عملیات - Enhanced */
+.adp-card-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 15px;
+    border-top: 1px solid var(--adp-gray-border);
+}
+
+.adp-btn-view {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.adp-btn-view:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+
+.adp-btn-icon {
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--adp-gray-border);
+    background: var(--adp-white);
+    color: var(--adp-muted);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.adp-btn-icon:hover {
+    color: #e91e63;
+    border-color: #e91e63;
+    background: #fce4ec;
+    transform: scale(1.1);
+}
+
+.adp-btn-icon.active {
+    border-color: #e91e63;
+    background: #e91e63;
+    color: var(--adp-white);
+}
+
+.adp-btn-icon.active:hover {
+    background: #c2185b;
+}
+
+.adp-btn-icon i {
+    font-size: 18px;
+    color: inherit;
+}
+
+/* Toast Notification */
+.adp-toast {
+    position: fixed;
+    bottom: -100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: #ffffff;
+    padding: 12px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.adp-toast.show {
+    bottom: 30px;
+}
+
+/* Pagination */
+.adp-pagination { 
+    text-align: center; 
+    margin: 30px 0;
+}
+.adp-pagination .page-numbers { 
+    display: inline-block; 
+    padding: 8px 14px; 
+    margin: 0 4px; 
+    background: var(--adp-gray-light); 
+    color: var(--adp-text); 
+    border-radius: 6px; 
+    text-decoration: none; 
+    font-size: 14px;
+}
+.adp-pagination .current { background: var(--adp-yellow); color: #fff; }
+.adp-pagination .next, .adp-pagination .prev { font-weight: bold; }
+
+/* Single page */
+.adp-single { max-width: 900px; margin: 0 auto; padding: 20px; }
+.adp-single-header { text-align: center; margin-bottom: 30px; }
+.adp-single-thumb img { 
+    max-width: 100%; 
+    height: auto; 
+    border-radius: 12px; 
+    margin-bottom: 20px;
+}
+.adp-single-title { 
+    font-size: 32px; 
+    margin: 0 0 10px; 
+    color: var(--adp-text);
+}
+.adp-tags-single { 
+    justify-content: center; 
+    margin-bottom: 20px;
+}
+.adp-single-content { 
+    font-size: 16px; 
+    line-height: 1.8; 
+    color: var(--adp-text); 
+    margin-bottom: 40px;
+}
+.adp-single-contact-box, .adp-single-map-box { 
+    background: var(--adp-gray-light); 
+    padding: 20px; 
+    border-radius: 12px; 
+    margin-bottom: 30px;
+}
+.adp-box-title { 
+    font-size: 20px; 
+    margin: 0 0 15px; 
+    color: var(--adp-text); 
+    display: flex; 
+    align-items: center;
+}
+.adp-box-title i {
+    color: var(--adp-yellow-dark);
+    margin-left: 8px;
+    font-size: 20px;
+}
+
+.adp-single-meta {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 15px;
+}
+.adp-single-meta li {
+    font-size: 15px;
+    color: var(--adp-text);
+    display: flex;
+    align-items: center;
+}
+.adp-single-meta li i {
+    color: var(--adp-yellow-dark);
+    margin-left: 8px;
+    font-size: 16px;
+    flex-shrink: 0;
+}
+.adp-single-meta li span {
+    font-weight: 600;
+    margin-left: 5px;
+    color: var(--adp-muted);
+}
+.adp-single-meta li a {
+    color: var(--adp-text);
+    text-decoration: none;
+    font-weight: 500;
+}
+.adp-single-meta li a:hover {
+    color: var(--adp-yellow-dark);
+}
+
+/* Map embed - responsive iframe container */
+.adp-embed-single {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--adp-radius);
+    box-shadow: var(--adp-shadow);
+    margin-top: 15px;
+}
+
+.adp-embed-single iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: var(--adp-radius);
+}
+
+/* Responsiveness - Enhanced */
+@media (max-width: 1100px) {
+    .adp-filter-row { 
+        padding: 16px; 
+    }
+    
+    .adp-cols-4 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .adp-cols-3, .adp-cols-4 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .adp-filter-row { 
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .adp-input-search, .adp-input-type { 
+        flex: 1 1 100%; 
+        order: -1; 
+    }
+    
+    .adp-input, .adp-btn { 
+        height: 44px;
+        font-size: 13px;
+    }
+    
+    .adp-entity-badge {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+}
+
+@media (max-width: 600px) {
+    :root {
+        --adp-radius: 10px;
+    }
+    
+    .adp-filter { 
+        margin: 20px auto;
+    }
+    
+    .adp-filter-row {
+        padding: 12px;
+        gap: 8px;
+    }
+    
+    .adp-cols-2, .adp-cols-3, .adp-cols-4 {
+        grid-template-columns: 1fr;
+    }
+    
+    .adp-input {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+    
+    .adp-btn {
+        flex: 1 1 48%;
+    }
+    
+    .adp-card {
+        margin-bottom: 15px;
+    }
+    
+    .adp-thumb img,
+    .adp-thumb-default {
+        height: 180px;
+    }
+    
+    .adp-content {
+        padding: 15px;
+    }
+    
+    .adp-title {
+        font-size: 17px;
+    }
+    
+    .adp-excerpt {
+        -webkit-line-clamp: 2;
+    }
+    
+    .adp-card-actions {
+        flex-direction: column;
+        gap: 8px;
+    }
+    
+    .adp-btn-view {
+        width: 100%;
+    }
+    
+    .adp-btn-icon {
+        width: 100%;
+    }
+}
+
+/* Print styles */
+@media print {
+    .adp-filter,
+    .adp-card-actions,
+    .adp-pagination {
+        display: none !important;
+    }
+    
+    .adp-card {
+        break-inside: avoid;
+        page-break-inside: avoid;
+    }
